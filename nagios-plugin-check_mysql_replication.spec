@@ -1,5 +1,5 @@
 %include	/usr/lib/rpm/macros.perl
-Summary:	Nagios plugin to MySQL slave replication
+Summary:	Nagios plugin to check replication between MySQL database instances
 Name:		nagios-plugin-check_mysql_replication
 Version:	0.03
 Release:	0.1
