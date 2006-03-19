@@ -1,5 +1,6 @@
 %include	/usr/lib/rpm/macros.perl
 Summary:	Nagios plugin to check replication between MySQL database instances
+Summary(pl):	Wtyczka Nagiosa do sprawdzania replikacji miêdzy instancjami bazy danych MySQL
 Name:		nagios-plugin-check_mysql_replication
 Version:	0.03
 Release:	0.1
@@ -18,6 +19,11 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 Check if a MySQL slave is running (IO thread), plus check the master
 and server to see their current replication BINLOG positions.
+
+%description -l pl
+Ta wtyczka sprawdza, czy podrzêdny MySQL (w±tek IO) dzia³a, oraz
+sprawdza instancjê nadrzêdn± i podrzêdn±, aby sprawdziæ ich aktualne
+po³o¿enia BINLOG replikacji.
 
 %prep
 %setup -q -c -T
