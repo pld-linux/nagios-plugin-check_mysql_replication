@@ -6,8 +6,8 @@ Version:	0.03
 Release:	0.3
 License:	Opensource
 Group:		Networking
-Source0:	check_replication.pl
-# Source0-md5:	d8b3b3f133416d2d813fa43343ed4ae9
+Source0:	http://www.james.rcpt.to/svn/trunk/nagios/check_mysql_replication/check_mysql_replication.pl
+# Source0-md5:	af8da7807e1a03bf301fa70658fb08c3
 URL:		http://www.james.rcpt.to/svn/trunk/nagios/check_mysql_replication/
 BuildRequires:	rpm-perlprov >= 4.1-13
 Requires:	nagios-core
