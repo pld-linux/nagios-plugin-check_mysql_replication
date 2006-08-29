@@ -4,9 +4,11 @@ use Getopt::Long;
 use DBI;
 
 # Changelog:
-#  20050304 - Skip the row count on InnoDB tables, becuase the SHOW TABLE STATUS 
-#    	      is just an ESTIMATE that varies wildly. Broke the check for 
-#	      this out to its own subroutine to clean up compare_status().
+#  20060825 - Added newlines and swapped a die(3) to an exit(3), thanks to 
+#             a patch from Elan Euusamae.
+#  20050304 - Skip the row count on InnoDB tables, because the SHOW TABLE 
+#  	      STATUS is just an ESTIMATE that varies wildly. Broke the check 
+#  	      for this out to its own subroutine to clean up compare_status().
 #  20050303 - Correct master-port handling (I dont use this now as I get the 
 #	      master figured out from the slave by doing 'show slave status').
 #	    - Added the master and slave ports to the printed output (I run 
@@ -22,19 +24,23 @@ use DBI;
 #	      If your replication is good, then the number of row between the 
 #	      master and slave should be about the same, and the update time on 
 #	      each table within a replicated database should be about the same.
-#	      The 'about' is because the time difference in checking the slave and 
-#	      then the master, and the delay in replication in the other direction.
-#	    - If there are table differences in the random check, then show a warning.
+#	      The 'about' is because the time difference in checking the 
+#	      slave and then the master, and the delay in replication in 
+#	      the other direction.
+#	    - If there are table differences in the random check, then 
+#	      show a warning.
 #
 #  20050217 - Fix a type in the comments
-#	    - Convert the Seconds_Behind_Master to hours and seconds if it is large
+#	    - Convert the Seconds_Behind_Master to hours and seconds if it 
+#	      is large
 #
 #  20040120 - Make it find the master automatically, so you only specify a slave
 #	    - Update the output to show second behind for MySQL 4.1 slaves
 #	    
-#  20041102 - Support MySQl 4.1 Exec_master_log_pos -> Exec_Master_Log_Pos case change
+#  20041102 - Support MySQl 4.1 Exec_master_log_pos -> Exec_Master_Log_Pos 
+#  	      case change
 
-our $VERSION=0.03;
+our $VERSION=0.04;
 
 # $Id$
 
@@ -119,13 +125,13 @@ sub get_status {
 	debug(1, "Connecting to slave $host:$port as user " . $options->{'slave-user'});
 	my $dbh = DBI->connect("DBI:mysql:host=$host:port=$port", $options->{'slave-user'}, $options->{'slave-pass'});
 	if (not $dbh) {
-		print "UNKNOWN: cannot connect to $host";
+		print "UNKNOWN: cannot connect to $host\n";
 		exit 3;
 	}
 	my $sql = "show variables";
 	my $sth = $dbh->prepare($sql);
 	if (not $sth) {
-		print "UNKNOWN: cannot prepare $sql";
+		print "UNKNOWN: cannot prepare $sql\n";
 		exit 3;
 	}
 	debug(2, "Getting slave variables");
@@ -138,7 +144,7 @@ sub get_status {
 	$sql = "show slave status";
 	$sth = $dbh->prepare($sql);
 	if (not $sth) {
-		print "UNKNOWN: cannot prepare $sql";
+		print "UNKNOWN: cannot prepare $sql\n";
 		exit 3;
 	}
 	debug(2, "Getting slave replication status");
@@ -176,8 +182,8 @@ sub get_status {
 	$dbh = DBI->connect("DBI:mysql:host=$host:port=$port", $user, $pass);
 
 	if (not $dbh) {
-		print "UNKNOWN: Cannot connect to master $host:$port";
-		die 3;
+		print "UNKNOWN: Cannot connect to master $host:$port\n";
+		exit 3;
 	}
 	$sql = "show variables";
 	$sth = $dbh->prepare($sql);
@@ -192,6 +198,10 @@ sub get_status {
 	$sth = $dbh->prepare($sql);
 	debug(2, "Getting master replication status");
 	$res = $sth->execute;
+	if (not $res) {
+		print "UNKNOWN: Cannot get replication status (lack of privileges?)\n";
+		exit 3;
+	}
 	$master_data->{replication} = $sth->fetchrow_hashref;
 	$sth->finish;
 
@@ -262,7 +272,7 @@ sub compare_status {
 
 	# Step one; is the SQL slave thread running (critical if not)
 	if (lc($slave->{replication}->{'Slave_SQL_Running'}) ne lc('yes')) {
-		print "CRITICAL: Slave IO not running";
+		print "CRITICAL: Slave IO not running\n";
 		exit 2;
 	}
 
@@ -305,13 +315,13 @@ sub compare_status {
 	$state.= "\n";
 
 	if ($diff >= $options->{'crit'}) {
-		print "CRITICAL: $state";
+		print "CRITICAL: $state\n";
 		exit 2;
 	} elsif ($diff >= $options->{'warn'} || $table_diff_message) {
-		print "WARN: $state";
+		print "WARN: $state\n";
 		exit 1;
 	}
-	print "OK: $state";
+	print "OK: $state\n";
 	exit 0;
 }
 
