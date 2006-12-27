@@ -3,7 +3,7 @@ Summary:	Nagios plugin to check replication between MySQL database instances
 Summary(pl):	Wtyczka Nagiosa do sprawdzania replikacji miêdzy instancjami bazy danych MySQL
 Name:		nagios-plugin-check_mysql_replication
 Version:	0.03
-Release:	0.3
+Release:	1
 License:	Opensource
 Group:		Networking
 Source0:	http://www.james.rcpt.to/svn/trunk/nagios/check_mysql_replication/check_mysql_replication.pl
@@ -28,12 +28,12 @@ po³o¿enia BINLOG replikacji.
 
 %prep
 %setup -q -c -T
-install %{SOURCE0} .
+install %{SOURCE0} check_mysql_replication.pl
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{_plugindir}}
-install check_replication.pl $RPM_BUILD_ROOT%{_plugindir}/check_mysql_replication
+install check_mysql_replication.pl $RPM_BUILD_ROOT%{_plugindir}/check_mysql_replication
 
 %clean
 rm -rf $RPM_BUILD_ROOT
