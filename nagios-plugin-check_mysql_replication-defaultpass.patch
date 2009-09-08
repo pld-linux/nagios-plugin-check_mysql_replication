@@ -1,11 +1,11 @@
---- ./check_mysql_replication.pl~	2006-12-27 15:20:05.000000000 +0200
-+++ ./check_mysql_replication.pl	2006-12-27 15:20:50.066268435 +0200
+--- ./check_mysql_replication~	2006-12-27 15:20:05.000000000 +0200
++++ ./check_mysql_replication	2006-12-27 15:20:50.066268435 +0200
 @@ -44,7 +44,7 @@
  
  # $Id$
  
 -my $options = { 'slave-port' => 3306, 'slave' => 'slavehost', 'crit' => 0.5, 'warn' => 0.1 , 'slave-user' => 'repl', 'slave-pass' => 'password', 'debug' => 0, 'table-rows-diff-absolute-crit' => 10, 'table-rows-diff-absolute-warn' => 5};
-+my $options = { 'slave-port' => 3306, 'slave' => 'slavehost', 'crit' => 0.5, 'warn' => 0.1 , 'slave-user' => 'repl', 'slave-pass' => '', 'debug' => 0, 'table-rows-diff-absolute-crit' => 10, 'table-rows-diff-absolute-warn' => 5};
++my $options = { 'slave-port' => 3306, 'slave' => '', 'crit' => 0.5, 'warn' => 0.1 , 'slave-user' => 'replica', 'slave-pass' => '', 'debug' => 0, 'table-rows-diff-absolute-crit' => 10, 'table-rows-diff-absolute-warn' => 5};
  GetOptions($options, "slave=s", "slave-user=s", "slave-pass=s", "master=s", "master-port=i", "master-user=s", "master-pass=s", "crit=s", "warn=s", "help", "slave-port=i", "debug=i", "version", "check-random-database", "table-rows-diff-absolute-crit=i", "table-rows-diff-absolute-warn=i");
  my $max_binlog;
  
