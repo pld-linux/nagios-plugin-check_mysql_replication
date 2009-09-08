@@ -1,0 +1,36 @@
+--- ./check_mysql_replication	2006-08-30 01:15:04.000000000 +0300
++++ ./check_mysql_replication	2009-09-08 14:03:17.000000000 +0300
+@@ -125,13 +125,13 @@
+ 	debug(1, "Connecting to slave $host:$port as user " . $options->{'slave-user'});
+ 	my $dbh = DBI->connect("DBI:mysql:host=$host:port=$port", $options->{'slave-user'}, $options->{'slave-pass'});
+ 	if (not $dbh) {
+-		print "UNKNOWN: cannot connect to $host\n";
++		print "UNKNOWN: Cannot connect to $host: $DBI::errstr\n";
+ 		exit 3;
+ 	}
+ 	my $sql = "show variables";
+ 	my $sth = $dbh->prepare($sql);
+ 	if (not $sth) {
+-		print "UNKNOWN: cannot prepare $sql\n";
++		print "UNKNOWN: Cannot prepare $sql\n";
+ 		exit 3;
+ 	}
+ 	debug(2, "Getting slave variables");
+@@ -144,7 +144,7 @@
+ 	$sql = "show slave status";
+ 	$sth = $dbh->prepare($sql);
+ 	if (not $sth) {
+-		print "UNKNOWN: cannot prepare $sql\n";
++		print "UNKNOWN: Cannot prepare $sql\n";
+ 		exit 3;
+ 	}
+ 	debug(2, "Getting slave replication status");
+@@ -182,7 +182,7 @@
+ 	$dbh = DBI->connect("DBI:mysql:host=$host:port=$port", $user, $pass);
+ 
+ 	if (not $dbh) {
+-		print "UNKNOWN: Cannot connect to master $host:$port\n";
++		print "UNKNOWN: Cannot connect to master $host:$port: $DBI::errstr\n";
+ 		exit 3;
+ 	}
+ 	$sql = "show variables";
