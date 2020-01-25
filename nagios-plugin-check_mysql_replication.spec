@@ -1,5 +1,4 @@
 %define		plugin	check_mysql_replication
-%include	/usr/lib/rpm/macros.perl
 Summary:	Nagios plugin to check replication between MySQL database instances
 Summary(pl.UTF-8):	Wtyczka Nagiosa do sprawdzania replikacji między instancjami bazy danych MySQL
 Name:		nagios-plugin-%{plugin}
